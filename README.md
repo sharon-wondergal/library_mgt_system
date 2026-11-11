@@ -5,7 +5,8 @@ A web application that lets librarians manage a school or college library catalo
 MySQL and plain HTML, CSS and JavaScript.
 
 **Live design preview:** https://sharon-wondergal.github.io/library_mgt_system/
-(saved snapshots of every screen; to use the working system, run it locally as described below)
+(saved snapshots of every screen; to use the working system, run it locally as described below,
+or put it online by following [DEPLOYMENT.md](DEPLOYMENT.md))
 
 ---
 

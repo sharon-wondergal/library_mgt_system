@@ -164,8 +164,9 @@ def split_sql_script(text):
 
 def run_schema_script(reset=False):
     db_name = current_app.config["DB_NAME"]
-    if not re.fullmatch(r"\w+", db_name):
-        raise click.ClickException("DB_NAME may only contain letters, digits and underscores.")
+    # "$" is allowed because hosts such as PythonAnywhere name databases "user$name".
+    if not re.fullmatch(r"[\w$]+", db_name):
+        raise click.ClickException("DB_NAME may only contain letters, digits, '_' and '$'.")
 
     with open(SQL_SCRIPT, encoding="utf-8") as fh:
         script = fh.read().replace("library_db", db_name)
