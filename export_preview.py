@@ -39,12 +39,6 @@ PAGES = [
     ("error_404.html",      "/no-such-page",   "Error page (404)"),
 ]
 
-BANNER = ('<div style="position:fixed;bottom:12px;right:12px;z-index:200;background:#0f1f3d;'
-          'color:#fff;font:600 12px/1.4 Segoe UI,Arial,sans-serif;padding:8px 12px;border-radius:8px;'
-          'box-shadow:0 4px 14px rgba(0,0,0,.25)">Design preview &middot; not connected to the '
-          'database &middot; <a href="index.html" style="color:#f1d98a">all pages</a></div>')
-
-
 def link_target(path):
     """Map an app URL to the matching preview file (or '#')."""
     path = path.replace("&amp;", "&")
@@ -72,7 +66,6 @@ def make_static(html):
     html = re.sub(r'action="(/[^"]*)"', lambda m: f'action="{link_target(m.group(1))}"', html)
     html = re.sub(r'<form method="post"( action="[^"]*")?', '<form method="get" action="#"', html)
     html = re.sub(r'name="csrf_token" value="[^"]*"', 'name="csrf_token" value=""', html)
-    html = re.sub(r'(<body[^>]*>)', r'\1' + BANNER, html, count=1)
     return html
 
 
