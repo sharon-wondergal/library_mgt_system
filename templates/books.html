@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% from "_macros.html" import stock_badge, delete_link, pagination with context %}
+{% set active_page = 'books' %}
+{% block title %}All Books{% endblock %}
+{% block heading %}All Books{% endblock %}
+
+{% block content %}
+<section class="card">
+  <form class="toolbar" method="get" action="{{ url_for('books.list_books') }}" role="search" data-filter-form>
+    <div class="toolbar-search">
+      {{ icon('search', 18) }}
+      <input type="search" name="q" value="{{ q }}" maxlength="100"
+             placeholder="Search by title, author, ISBN or category" aria-label="Search books">
+    </div>
+    <label class="sr-only" for="category-filter">Filter by category</label>
+    <select id="category-filter" name="category" data-auto-submit>
+      <option value="">All categories</option>
+      {% for c in categories %}
+        <option value="{{ c }}" {{ 'selected' if c == category }}>{{ c }}</option>
+      {% endfor %}
+    </select>
+    <label class="sr-only" for="sort">Sort by</label>
+    <select id="sort" name="sort" data-auto-submit>
+      {% for key, option in sort_options.items() %}
+        <option value="{{ key }}" {{ 'selected' if key == sort }}>Sort: {{ option[0] }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">{{ icon('search', 16) }} Search</button>
+    {% if q or category or sort != 'title' %}
+      <a href="{{ url_for('books.list_books') }}" class="btn btn-ghost">{{ icon('refresh', 16) }} Reset</a>
+    {% endif %}
+  </form>
+
+  <div class="results-bar">
+    <p>
+      {% if total %}
+        Showing <strong>{{ first_item }}–{{ last_item }}</strong> of <strong>{{ total }}</strong>
+        {{ 'book' if total == 1 else 'books' }}
+      {% else %}No books found{% endif %}
+      {% if q %} matching “<strong>{{ q }}</strong>”{% endif %}
+      {% if category %} in <strong>{{ category }}</strong>{% endif %}
+    </p>
+    <a href="{{ url_for('books.add_book') }}" class="btn btn-primary btn-sm">{{ icon('plus', 16) }} Add book</a>
+  </div>
+
+  {% if books %}
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Title &amp; author</th>
+          <th scope="col" class="col-isbn">ISBN</th>
+          <th scope="col" class="col-category">Category</th>
+          <th scope="col" class="col-year">Year</th>
+          <th scope="col" class="col-shelf">Shelf</th>
+          <th scope="col">Copies</th>
+          <th scope="col" class="col-actions"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in books %}
+        <tr>
+          <td>
+            <a class="book-title" href="{{ url_for('books.book_details', book_id=b.book_id) }}">{{ b.title }}</a>
+            <span class="book-author">{{ b.author }}</span>
+          </td>
+          <td class="col-isbn mono">{{ b.isbn }}</td>
+          <td class="col-category"><span class="chip">{{ b.category }}</span></td>
+          <td class="col-year">{{ b.publication_year or '—' }}</td>
+          <td class="col-shelf mono">{{ b.shelf_location }}</td>
+          <td>{{ stock_badge(b.quantity, low_stock) }}</td>
+          <td class="col-actions">
+            <div class="row-actions">
+              <a href="{{ url_for('books.book_details', book_id=b.book_id) }}" class="icon-btn" title="View details"
+                 aria-label="View {{ b.title }}">{{ icon('eye', 18) }}</a>
+              <a href="{{ url_for('books.edit_book', book_id=b.book_id) }}" class="icon-btn" title="Edit"
+                 aria-label="Edit {{ b.title }}">{{ icon('edit', 18) }}</a>
+              {% if is_admin %}{{ delete_link(b, label=false, classes='icon-btn icon-btn-danger') }}{% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {{ pagination(page, pages) }}
+  {% else %}
+  <div class="empty-state">
+    <span class="empty-icon">{{ icon('search', 32) }}</span>
+    <h2>No books match your search</h2>
+    <p>Try a different keyword or category, or add a new book to the catalogue.</p>
+    <div class="empty-actions">
+      {% if q or category %}<a href="{{ url_for('books.list_books') }}" class="btn btn-secondary">Clear filters</a>{% endif %}
+      <a href="{{ url_for('books.add_book') }}" class="btn btn-primary">{{ icon('plus', 16) }} Add a book</a>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

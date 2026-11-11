@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% set active_page = 'dashboard' %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+
+{% block content %}
+<p class="page-intro">Hello, {{ session.full_name }}. Here is an overview of the library catalogue.</p>
+
+<section class="stat-grid" aria-label="Catalogue statistics">
+  <a class="stat-card" href="{{ url_for('books.list_books') }}">
+    <span class="stat-icon tone-navy">{{ icon('book', 22) }}</span>
+    <span class="stat-label">Total books (titles)</span>
+    <span class="stat-value">{{ "{:,}".format(stats.total_titles) }}</span>
+  </a>
+  <a class="stat-card" href="{{ url_for('books.list_books', sort='quantity') }}">
+    <span class="stat-icon tone-blue">{{ icon('layers', 22) }}</span>
+    <span class="stat-label">Total copies</span>
+    <span class="stat-value">{{ "{:,}".format(stats.total_copies) }}</span>
+  </a>
+  <a class="stat-card" href="#categories">
+    <span class="stat-icon tone-teal">{{ icon('tag', 22) }}</span>
+    <span class="stat-label">Categories</span>
+    <span class="stat-value">{{ stats.total_categories }}</span>
+  </a>
+  <a class="stat-card" href="{{ url_for('books.list_books', sort='quantity') }}">
+    <span class="stat-icon tone-amber">{{ icon('alert', 22) }}</span>
+    <span class="stat-label">Out of stock</span>
+    <span class="stat-value">{{ stats.out_of_stock }}</span>
+    <span class="stat-note">{{ stats.low_stock }} more with {{ low_stock }} or fewer copies</span>
+  </a>
+</section>
+
+<section class="quick-actions" aria-label="Quick navigation">
+  <a href="{{ url_for('books.add_book') }}" class="btn btn-primary">{{ icon('plus', 16) }} Add new book</a>
+  <a href="{{ url_for('books.list_books') }}" class="btn btn-secondary">{{ icon('library', 16) }} View all books</a>
+  <a href="{{ url_for('books.list_books', sort='newest') }}" class="btn btn-secondary">{{ icon('clock', 16) }} Recently added</a>
+</section>
+
+<div class="dash-grid">
+  <section class="card" id="categories">
+    <header class="card-header"><h2>Books by category</h2></header>
+    {% if categories %}
+      <ul class="bar-list">
+        {% for c in categories %}
+        <li>
+          <a href="{{ url_for('books.list_books', category=c.category) }}">
+            <span class="bar-label">{{ c.category }}</span>
+            <span class="bar-count">{{ c.titles }} {{ 'title' if c.titles == 1 else 'titles' }} · {{ c.copies }} copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: {{ (c.titles / max_titles * 100) | round(1) }}%"></span></span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-note">No categories yet. <a href="{{ url_for('books.add_book') }}">Add the first book</a>.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <header class="card-header"><h2>Recently added</h2>
+      <a class="card-link" href="{{ url_for('books.list_books', sort='newest') }}">View all</a></header>
+    {% if recent %}
+      <ul class="mini-list">
+        {% for b in recent %}
+        <li>
+          <a href="{{ url_for('books.book_details', book_id=b.book_id) }}">
+            <strong>{{ b.title }}</strong>
+            <span>{{ b.author }} · {{ b.category }}</span>
+          </a>
+          <span class="badge">{{ b.quantity }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-note">The catalogue is empty.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <header class="card-header"><h2>Needs attention</h2>
+      <a class="card-link" href="{{ url_for('books.list_books', sort='quantity') }}">View stock</a></header>
+    {% if attention %}
+      <ul class="mini-list">
+        {% for b in attention %}
+        <li>
+          <a href="{{ url_for('books.book_details', book_id=b.book_id) }}">
+            <strong>{{ b.title }}</strong>
+            <span>Shelf {{ b.shelf_location }}</span>
+          </a>
+          {% if b.quantity == 0 %}<span class="badge badge-danger">Out of stock</span>
+          {% else %}<span class="badge badge-warning">{{ b.quantity }} left</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-note">All titles are well stocked.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{# Reusable template pieces #}
+
+{% macro stock_badge(qty, low) -%}
+  {%- if qty == 0 -%}<span class="badge badge-danger">Out of stock</span>
+  {%- elif qty <= low -%}<span class="badge badge-warning">Low · {{ qty }}</span>
+  {%- else -%}<span class="badge badge-success">{{ qty }} in stock</span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro delete_link(book, label=true, classes='btn btn-danger-outline') -%}
+  <a href="{{ url_for('books.delete_book', book_id=book.book_id) }}" class="{{ classes }}"
+     data-delete-trigger data-title="{{ book.title }}" data-isbn="{{ book.isbn }}"
+     {% if not label %}aria-label="Delete {{ book.title }}" title="Delete"{% endif %}>
+    {{ icon('trash', 16) }}{% if label %} Delete{% endif %}</a>
+{%- endmacro %}
+
+{# The add and edit pages share the same form #}
+{% macro book_form(form, errors, categories, submit_label, cancel_url, book_id=None) %}
+<form method="post" class="form card form-card" novalidate data-validate data-book-form
+      {% if book_id %}data-book-id="{{ book_id }}"{% endif %}>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <p class="form-note">Fields marked <span class="req">*</span> are required.</p>
+
+  <fieldset>
+    <legend>Book information</legend>
+    <div class="form-grid">
+      {{ text_field('title', 'Title', form, errors, required=true, maxlength=255, wide=true,
+                    placeholder='e.g. Introduction to Algorithms') }}
+      {{ text_field('author', 'Author(s)', form, errors, required=true, maxlength=255, wide=true,
+                    placeholder='e.g. Thomas H. Cormen') }}
+
+      <div class="field {{ 'has-error' if errors.isbn }}">
+        <label for="isbn">ISBN <span class="req">*</span></label>
+        <input id="isbn" name="isbn" type="text" value="{{ form.get('isbn', '') }}" required maxlength="20"
+               inputmode="numeric" autocomplete="off" placeholder="10 or 13 digits, e.g. 978-0-13-235088-4"
+               data-isbn aria-describedby="isbn-help isbn-error">
+        <p class="field-help" id="isbn-help" data-isbn-status>Hyphens and spaces are allowed; the check digit is verified.</p>
+        <p class="field-error" id="isbn-error" data-error-for="isbn">{{ errors.isbn or '' }}</p>
+      </div>
+
+      <div class="field {{ 'has-error' if errors.category }}">
+        <label for="category">Category <span class="req">*</span></label>
+        <input id="category" name="category" type="text" value="{{ form.get('category', '') }}" required
+               maxlength="100" list="category-options" placeholder="Choose or type a new category"
+               aria-describedby="category-error">
+        <datalist id="category-options">
+          {% for c in categories %}<option value="{{ c }}">{% endfor %}
+        </datalist>
+        <p class="field-error" id="category-error" data-error-for="category">{{ errors.category or '' }}</p>
+      </div>
+
+      {{ text_field('publisher', 'Publisher', form, errors, maxlength=255, placeholder='e.g. MIT Press') }}
+
+      <div class="field {{ 'has-error' if errors.publication_year }}">
+        <label for="publication_year">Publication year</label>
+        <input id="publication_year" name="publication_year" type="number" min="1000" max="{{ current_year }}"
+               step="1" value="{{ form.get('publication_year', '') }}" placeholder="e.g. {{ current_year - 3 }}"
+               aria-describedby="publication_year-error">
+        <p class="field-error" id="publication_year-error" data-error-for="publication_year">{{ errors.publication_year or '' }}</p>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Stock and location</legend>
+    <div class="form-grid">
+      <div class="field {{ 'has-error' if errors.quantity }}">
+        <label for="quantity">Copies available <span class="req">*</span></label>
+        <div class="stepper">
+          <button type="button" class="stepper-btn" data-step="-1" aria-label="Decrease quantity">{{ icon('minus', 16) }}</button>
+          <input id="quantity" name="quantity" type="number" min="0" max="100000" step="1" required
+                 value="{{ form.get('quantity', '') }}" aria-describedby="quantity-error">
+          <button type="button" class="stepper-btn" data-step="1" aria-label="Increase quantity">{{ icon('plus', 16) }}</button>
+        </div>
+        <p class="field-error" id="quantity-error" data-error-for="quantity">{{ errors.quantity or '' }}</p>
+      </div>
+      {{ text_field('shelf_location', 'Shelf location', form, errors, required=true, maxlength=100,
+                    placeholder='e.g. CS-A1-02') }}
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <a href="{{ cancel_url }}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">{{ icon('save', 16) }} {{ submit_label }}</button>
+  </div>
+</form>
+{% endmacro %}
+
+{% macro text_field(name, label, form, errors, required=false, maxlength=255, wide=false, placeholder='') %}
+<div class="field {{ 'field-wide' if wide }} {{ 'has-error' if errors[name] }}">
+  <label for="{{ name }}">{{ label }}{% if required %} <span class="req">*</span>{% endif %}</label>
+  <input id="{{ name }}" name="{{ name }}" type="text" value="{{ form.get(name, '') }}"
+         maxlength="{{ maxlength }}" {% if required %}required{% endif %} placeholder="{{ placeholder }}"
+         aria-describedby="{{ name }}-error">
+  <p class="field-error" id="{{ name }}-error" data-error-for="{{ name }}">{{ errors[name] or '' }}</p>
+</div>
+{% endmacro %}
+
+{% macro pagination(page, pages) %}
+{% if pages > 1 %}
+<nav class="pagination" aria-label="Pagination">
+  {% if page > 1 %}
+    <a href="{{ url_with(page=page - 1) }}" class="page-btn" aria-label="Previous page">{{ icon('chevron-left', 16) }}</a>
+  {% else %}
+    <span class="page-btn disabled" aria-hidden="true">{{ icon('chevron-left', 16) }}</span>
+  {% endif %}
+
+  {% for p in range(1, pages + 1) %}
+    {% if p == 1 or p == pages or (p >= page - 2 and p <= page + 2) %}
+      {% if p == page %}
+        <span class="page-btn current" aria-current="page">{{ p }}</span>
+      {% else %}
+        <a href="{{ url_with(page=p) }}" class="page-btn">{{ p }}</a>
+      {% endif %}
+    {% elif p == page - 3 or p == page + 3 %}
+      <span class="page-gap">…</span>
+    {% endif %}
+  {% endfor %}
+
+  {% if page < pages %}
+    <a href="{{ url_with(page=page + 1) }}" class="page-btn" aria-label="Next page">{{ icon('chevron-right', 16) }}</a>
+  {% else %}
+    <span class="page-btn disabled" aria-hidden="true">{{ icon('chevron-right', 16) }}</span>
+  {% endif %}
+</nav>
+{% endif %}
+{% endmacro %}

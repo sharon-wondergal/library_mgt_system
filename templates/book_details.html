@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "_macros.html" import stock_badge, delete_link with context %}
+{% set active_page = 'books' %}
+{% block title %}{{ book.title }}{% endblock %}
+{% block breadcrumb %}<a class="crumb" href="{{ url_for('books.list_books') }}">{{ icon('arrow-left', 14) }} All books</a>{% endblock %}
+{% block heading %}Book Details{% endblock %}
+
+{% block content %}
+<div class="details-grid">
+  <section class="card details-main">
+    <div class="details-head">
+      <div class="book-cover" aria-hidden="true">{{ icon('book', 36) }}</div>
+      <div>
+        <span class="chip">{{ book.category }}</span>
+        <h2 class="details-title">{{ book.title }}</h2>
+        <p class="details-author">by {{ book.author }}</p>
+      </div>
+    </div>
+
+    <dl class="detail-list">
+      <div><dt>ISBN</dt><dd class="mono">{{ book.isbn }}</dd></div>
+      <div><dt>Publisher</dt><dd>{{ book.publisher or 'Not recorded' }}</dd></div>
+      <div><dt>Publication year</dt><dd>{{ book.publication_year or 'Not recorded' }}</dd></div>
+      <div><dt>Shelf location</dt><dd>{{ icon('map-pin', 15) }} <span class="mono">{{ book.shelf_location }}</span></dd></div>
+      <div><dt>Copies available</dt><dd>{{ stock_badge(book.quantity, low_stock) }}</dd></div>
+      <div><dt>Book ID</dt><dd class="mono">#{{ book.book_id }}</dd></div>
+      <div><dt>Added</dt><dd>{{ book.created_at.strftime('%d %b %Y, %H:%M') }}</dd></div>
+      <div><dt>Last updated</dt><dd>{{ book.updated_at.strftime('%d %b %Y, %H:%M') }}</dd></div>
+    </dl>
+
+    <div class="details-actions">
+      <a href="{{ url_for('books.edit_book', book_id=book.book_id) }}" class="btn btn-primary">{{ icon('edit', 16) }} Edit book</a>
+      {% if is_admin %}{{ delete_link(book) }}{% endif %}
+    </div>
+  </section>
+
+  <aside class="card stock-card">
+    <header class="card-header"><h2>Update stock</h2></header>
+    <p class="stock-now"><span class="stock-number">{{ book.quantity }}</span>
+      {{ 'copy' if book.quantity == 1 else 'copies' }} on the shelf</p>
+
+    <form method="post" action="{{ url_for('books.adjust_quantity', book_id=book.book_id) }}"
+          class="form stock-form" novalidate data-stock-form data-current="{{ book.quantity }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="amount">Number of copies</label>
+        <input id="amount" name="amount" type="number" min="0" step="1" value="1" required>
+        <p class="field-error" data-error-for="amount"></p>
+      </div>
+      <div class="stock-buttons">
+        <button type="submit" name="action" value="add" class="btn btn-success">{{ icon('plus', 16) }} Add copies</button>
+        <button type="submit" name="action" value="remove" class="btn btn-secondary"
+                {{ 'disabled' if book.quantity == 0 }}>{{ icon('minus', 16) }} Remove copies</button>
+        <button type="submit" name="action" value="set" class="btn btn-ghost">Set exact quantity</button>
+      </div>
+    </form>
+    <p class="field-help">Use “Remove” when copies are lost or withdrawn. Quantity can never go below zero.</p>
+  </aside>
+</div>
+{% endblock %}

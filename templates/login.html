@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Sign in{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <section class="auth-card">
+    <div class="auth-brand">
+      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" width="56" height="56">
+      <h1>Campus Library</h1>
+      <p>Book Management System · Librarian sign in</p>
+    </div>
+
+    {% if error %}
+      <div class="alert alert-error" role="alert">{{ icon('error', 20) }}<span>{{ error }}</span></div>
+    {% endif %}
+
+    <form method="post" class="form" novalidate data-validate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="field">
+        <label for="username">Username</label>
+        <div class="input-icon">
+          {{ icon('user', 18) }}
+          <input id="username" name="username" type="text" value="{{ username }}" required
+                 autocomplete="username" autofocus maxlength="50">
+        </div>
+        <p class="field-error" data-error-for="username"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-icon has-toggle">
+          {{ icon('lock', 18) }}
+          <input id="password" name="password" type="password" required autocomplete="current-password">
+          <button type="button" class="password-toggle" data-password-toggle aria-controls="password"
+                  aria-label="Show password" aria-pressed="false" title="Show password">
+            <span class="when-hidden">{{ icon('eye', 18) }}</span>
+            <span class="when-shown">{{ icon('eye-off', 18) }}</span>
+          </button>
+        </div>
+        <p class="field-error" data-error-for="password"></p>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+
+    <p class="auth-hint">Demo accounts: <code>admin</code> / <code>admin123</code> (can delete) ·
+      <code>librarian</code> / <code>library123</code></p>
+  </section>
+</div>
+{% endblock %}

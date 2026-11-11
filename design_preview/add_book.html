@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add New Book · Campus Library</title>
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="layout-app"><div style="position:fixed;bottom:12px;right:12px;z-index:200;background:#0f1f3d;color:#fff;font:600 12px/1.4 Segoe UI,Arial,sans-serif;padding:8px 12px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.25)">Design preview &middot; not connected to the database &middot; <a href="index.html" style="color:#f1d98a">all pages</a></div>
+
+
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-brand">
+      <img src="static/images/logo.svg" alt="" width="40" height="40">
+      <div>
+        <span class="brand-name">Campus Library</span>
+        <span class="brand-sub">Book Management System</span>
+      </div>
+      <button class="icon-btn sidebar-close" type="button" data-sidebar-close aria-label="Close menu"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-heading">Menu</span>
+      <a href="dashboard.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+      <a href="books.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg><span>All Books</span></a>
+      <a href="add_book.html" class="nav-link active">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span>Add New Book</span></a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <span class="avatar" aria-hidden="true">H</span>
+        <div class="user-meta">
+          <strong>Head Librarian</strong>
+          <span class="role-pill role-admin">Admin</span>
+        </div>
+      </div>
+      <form method="get" action="#">
+        <input type="hidden" name="csrf_token" value="">
+        <button type="submit" class="nav-link nav-logout"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span>Sign out</span></button>
+      </form>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+
+<div class="main">
+  
+  <header class="topbar">
+    <button class="icon-btn menu-toggle" type="button" data-sidebar-open aria-label="Open menu"
+            aria-controls="sidebar" aria-expanded="false"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="topbar-title">
+      <a class="crumb" href="books.html"><svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7M19 12H5"/></svg> All books</a>
+      <h1>Add New Book</h1>
+    </div>
+    <form class="topbar-search" action="books.html" method="get" role="search">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" name="q" placeholder="Search books…" aria-label="Search books"
+             value="">
+    </form>
+  </header>
+  
+
+  <main class="content" id="content">
+    
+      
+    
+
+    
+<p class="page-intro">Register a new title in the library catalogue.</p>
+
+<form method="get" action="#" class="form card form-card" novalidate data-validate data-book-form
+      >
+  <input type="hidden" name="csrf_token" value="">
+  <p class="form-note">Fields marked <span class="req">*</span> are required.</p>
+
+  <fieldset>
+    <legend>Book information</legend>
+    <div class="form-grid">
+      
+<div class="field field-wide ">
+  <label for="title">Title <span class="req">*</span></label>
+  <input id="title" name="title" type="text" value=""
+         maxlength="255" required placeholder="e.g. Introduction to Algorithms"
+         aria-describedby="title-error">
+  <p class="field-error" id="title-error" data-error-for="title"></p>
+</div>
+
+      
+<div class="field field-wide ">
+  <label for="author">Author(s) <span class="req">*</span></label>
+  <input id="author" name="author" type="text" value=""
+         maxlength="255" required placeholder="e.g. Thomas H. Cormen"
+         aria-describedby="author-error">
+  <p class="field-error" id="author-error" data-error-for="author"></p>
+</div>
+
+
+      <div class="field ">
+        <label for="isbn">ISBN <span class="req">*</span></label>
+        <input id="isbn" name="isbn" type="text" value="" required maxlength="20"
+               inputmode="numeric" autocomplete="off" placeholder="10 or 13 digits, e.g. 978-0-13-235088-4"
+               data-isbn aria-describedby="isbn-help isbn-error">
+        <p class="field-help" id="isbn-help" data-isbn-status>Hyphens and spaces are allowed; the check digit is verified.</p>
+        <p class="field-error" id="isbn-error" data-error-for="isbn"></p>
+      </div>
+
+      <div class="field ">
+        <label for="category">Category <span class="req">*</span></label>
+        <input id="category" name="category" type="text" value="" required
+               maxlength="100" list="category-options" placeholder="Choose or type a new category"
+               aria-describedby="category-error">
+        <datalist id="category-options">
+          <option value="African Literature"><option value="Computer Science"><option value="Economics"><option value="Fiction"><option value="History"><option value="Mathematics"><option value="Philosophy"><option value="Science">
+        </datalist>
+        <p class="field-error" id="category-error" data-error-for="category"></p>
+      </div>
+
+      
+<div class="field  ">
+  <label for="publisher">Publisher</label>
+  <input id="publisher" name="publisher" type="text" value=""
+         maxlength="255"  placeholder="e.g. MIT Press"
+         aria-describedby="publisher-error">
+  <p class="field-error" id="publisher-error" data-error-for="publisher"></p>
+</div>
+
+
+      <div class="field ">
+        <label for="publication_year">Publication year</label>
+        <input id="publication_year" name="publication_year" type="number" min="1000" max="2026"
+               step="1" value="" placeholder="e.g. 2023"
+               aria-describedby="publication_year-error">
+        <p class="field-error" id="publication_year-error" data-error-for="publication_year"></p>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Stock and location</legend>
+    <div class="form-grid">
+      <div class="field ">
+        <label for="quantity">Copies available <span class="req">*</span></label>
+        <div class="stepper">
+          <button type="button" class="stepper-btn" data-step="-1" aria-label="Decrease quantity"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg></button>
+          <input id="quantity" name="quantity" type="number" min="0" max="100000" step="1" required
+                 value="1" aria-describedby="quantity-error">
+          <button type="button" class="stepper-btn" data-step="1" aria-label="Increase quantity"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <p class="field-error" id="quantity-error" data-error-for="quantity"></p>
+      </div>
+      
+<div class="field  ">
+  <label for="shelf_location">Shelf location <span class="req">*</span></label>
+  <input id="shelf_location" name="shelf_location" type="text" value=""
+         maxlength="100" required placeholder="e.g. CS-A1-02"
+         aria-describedby="shelf_location-error">
+  <p class="field-error" id="shelf_location-error" data-error-for="shelf_location"></p>
+</div>
+
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <a href="books.html" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> Save book</button>
+  </div>
+</form>
+
+
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 Campus Library · Library Book Management System
+  </footer>
+</div>
+
+
+  
+  <div class="modal" id="delete-modal" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
+         aria-describedby="delete-modal-desc">
+      <div class="modal-icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg></div>
+      <h2 id="delete-modal-title">Delete this book?</h2>
+      <p id="delete-modal-desc">
+        You are about to permanently remove <strong data-delete-title></strong>
+        (ISBN <span data-delete-isbn></span>) from the catalogue. This cannot be undone.
+      </p>
+      <form method="get" action="#" id="delete-modal-form">
+        <input type="hidden" name="csrf_token" value="">
+        <label class="checkbox">
+          <input type="checkbox" name="confirm" value="yes" id="delete-confirm-check">
+          <span>I understand this book record will be permanently deleted.</span>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn-danger" id="delete-confirm-btn" disabled>
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg> Delete book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+<script src="static/js/script.js" defer></script>
+</body>
+</html>

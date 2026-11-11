@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% from "_macros.html" import book_form with context %}
+{% set active_page = 'add' %}
+{% block title %}Add New Book{% endblock %}
+{% block breadcrumb %}<a class="crumb" href="{{ url_for('books.list_books') }}">{{ icon('arrow-left', 14) }} All books</a>{% endblock %}
+{% block heading %}Add New Book{% endblock %}
+
+{% block content %}
+<p class="page-intro">Register a new title in the library catalogue.</p>
+{{ book_form(form, errors, categories, 'Save book', url_for('books.list_books')) }}
+{% endblock %}

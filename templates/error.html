@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block heading %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="card error-card {{ 'error-plain' if not session.librarian_id }}">
+  <span class="error-code">{{ code }}</span>
+  <h2>{{ title }}</h2>
+  <p>{{ message }}</p>
+  <div class="empty-actions">
+    {% if show_retry %}
+      <a href="{{ request.url }}" class="btn btn-primary">{{ icon('refresh', 16) }} Try again</a>
+    {% endif %}
+    {% if session.librarian_id %}
+      <a href="{{ url_for('books.dashboard') }}" class="btn btn-secondary">Go to dashboard</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Go to sign in</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

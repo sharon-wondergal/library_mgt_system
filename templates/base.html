@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Library{% endblock %} · Campus Library</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{{ 'layout-app' if session.librarian_id else 'layout-plain' }}">
+
+{% if session.librarian_id %}
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-brand">
+      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" width="40" height="40">
+      <div>
+        <span class="brand-name">Campus Library</span>
+        <span class="brand-sub">Book Management System</span>
+      </div>
+      <button class="icon-btn sidebar-close" type="button" data-sidebar-close aria-label="Close menu">{{ icon('x') }}</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-heading">Menu</span>
+      <a href="{{ url_for('books.dashboard') }}" class="nav-link {{ 'active' if active_page == 'dashboard' }}">
+        {{ icon('dashboard') }}<span>Dashboard</span></a>
+      <a href="{{ url_for('books.list_books') }}" class="nav-link {{ 'active' if active_page == 'books' }}">
+        {{ icon('library') }}<span>All Books</span></a>
+      <a href="{{ url_for('books.add_book') }}" class="nav-link {{ 'active' if active_page == 'add' }}">
+        {{ icon('plus') }}<span>Add New Book</span></a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <span class="avatar" aria-hidden="true">{{ session.full_name[:1] | upper }}</span>
+        <div class="user-meta">
+          <strong>{{ session.full_name }}</strong>
+          <span class="role-pill role-{{ session.role }}">{{ session.role | capitalize }}</span>
+        </div>
+      </div>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="nav-link nav-logout">{{ icon('logout') }}<span>Sign out</span></button>
+      </form>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+{% endif %}
+
+<div class="main">
+  {% if session.librarian_id %}
+  <header class="topbar">
+    <button class="icon-btn menu-toggle" type="button" data-sidebar-open aria-label="Open menu"
+            aria-controls="sidebar" aria-expanded="false">{{ icon('menu', 22) }}</button>
+    <div class="topbar-title">
+      {% block breadcrumb %}{% endblock %}
+      <h1>{% block heading %}{% endblock %}</h1>
+    </div>
+    <form class="topbar-search" action="{{ url_for('books.list_books') }}" method="get" role="search">
+      {{ icon('search', 16) }}
+      <input type="search" name="q" placeholder="Search books…" aria-label="Search books"
+             value="{{ request.args.get('q', '') if active_page == 'books' else '' }}">
+    </form>
+  </header>
+  {% endif %}
+
+  <main class="content" id="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="alerts" aria-live="polite">
+        {% for category, message in messages %}
+          {% set kind = category if category in ['success', 'error', 'warning', 'info'] else 'info' %}
+          <div class="alert alert-{{ kind }}" role="{{ 'alert' if kind == 'error' else 'status' }}" data-alert>
+            {{ icon({'success': 'check', 'error': 'error', 'warning': 'alert', 'info': 'info'}[kind], 20) }}
+            <span>{{ message }}</span>
+            <button type="button" class="alert-close" data-alert-close aria-label="Dismiss">{{ icon('x', 16) }}</button>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    &copy; {{ current_year }} Campus Library · Library Book Management System
+  </footer>
+</div>
+
+{% if session.librarian_id and is_admin %}
+  {# Delete confirmation dialog -- opened by script.js for any [data-delete-trigger] link #}
+  <div class="modal" id="delete-modal" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
+         aria-describedby="delete-modal-desc">
+      <div class="modal-icon">{{ icon('trash', 26) }}</div>
+      <h2 id="delete-modal-title">Delete this book?</h2>
+      <p id="delete-modal-desc">
+        You are about to permanently remove <strong data-delete-title></strong>
+        (ISBN <span data-delete-isbn></span>) from the catalogue. This cannot be undone.
+      </p>
+      <form method="post" id="delete-modal-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label class="checkbox">
+          <input type="checkbox" name="confirm" value="yes" id="delete-confirm-check">
+          <span>I understand this book record will be permanently deleted.</span>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn-danger" id="delete-confirm-btn" disabled>
+            {{ icon('trash', 16) }} Delete book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>

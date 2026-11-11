@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set active_page = 'books' %}
+{% block title %}Delete · {{ book.title }}{% endblock %}
+{% block breadcrumb %}<a class="crumb" href="{{ url_for('books.book_details', book_id=book.book_id) }}">{{ icon('arrow-left', 14) }} Back to book</a>{% endblock %}
+{% block heading %}Delete Book{% endblock %}
+
+{% block content %}
+<section class="card confirm-card">
+  <div class="modal-icon">{{ icon('trash', 26) }}</div>
+  <h2>Delete “{{ book.title }}”?</h2>
+  <p>This permanently removes the record for <strong>{{ book.title }}</strong> by {{ book.author }}
+     (ISBN <span class="mono">{{ book.isbn }}</span>, {{ book.quantity }} {{ 'copy' if book.quantity == 1 else 'copies' }},
+     shelf {{ book.shelf_location }}). This action cannot be undone.</p>
+
+  <form method="post" action="{{ url_for('books.delete_book', book_id=book.book_id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="checkbox">
+      <input type="checkbox" name="confirm" value="yes" required>
+      <span>I understand this book record will be permanently deleted.</span>
+    </label>
+    <div class="modal-actions">
+      <a href="{{ url_for('books.book_details', book_id=book.book_id) }}" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn btn-danger">{{ icon('trash', 16) }} Delete book</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

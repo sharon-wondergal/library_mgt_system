@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found · Campus Library</title>
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="layout-app"><div style="position:fixed;bottom:12px;right:12px;z-index:200;background:#0f1f3d;color:#fff;font:600 12px/1.4 Segoe UI,Arial,sans-serif;padding:8px 12px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.25)">Design preview &middot; not connected to the database &middot; <a href="index.html" style="color:#f1d98a">all pages</a></div>
+
+
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-brand">
+      <img src="static/images/logo.svg" alt="" width="40" height="40">
+      <div>
+        <span class="brand-name">Campus Library</span>
+        <span class="brand-sub">Book Management System</span>
+      </div>
+      <button class="icon-btn sidebar-close" type="button" data-sidebar-close aria-label="Close menu"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-heading">Menu</span>
+      <a href="dashboard.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+      <a href="books.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg><span>All Books</span></a>
+      <a href="add_book.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span>Add New Book</span></a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <span class="avatar" aria-hidden="true">H</span>
+        <div class="user-meta">
+          <strong>Head Librarian</strong>
+          <span class="role-pill role-admin">Admin</span>
+        </div>
+      </div>
+      <form method="get" action="#">
+        <input type="hidden" name="csrf_token" value="">
+        <button type="submit" class="nav-link nav-logout"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span>Sign out</span></button>
+      </form>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+
+<div class="main">
+  
+  <header class="topbar">
+    <button class="icon-btn menu-toggle" type="button" data-sidebar-open aria-label="Open menu"
+            aria-controls="sidebar" aria-expanded="false"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="topbar-title">
+      
+      <h1>Page not found</h1>
+    </div>
+    <form class="topbar-search" action="books.html" method="get" role="search">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" name="q" placeholder="Search books…" aria-label="Search books"
+             value="">
+    </form>
+  </header>
+  
+
+  <main class="content" id="content">
+    
+      
+    
+
+    
+<section class="card error-card ">
+  <span class="error-code">404</span>
+  <h2>Page not found</h2>
+  <p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+  <div class="empty-actions">
+    
+    
+      <a href="dashboard.html" class="btn btn-secondary">Go to dashboard</a>
+    
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 Campus Library · Library Book Management System
+  </footer>
+</div>
+
+
+  
+  <div class="modal" id="delete-modal" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
+         aria-describedby="delete-modal-desc">
+      <div class="modal-icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg></div>
+      <h2 id="delete-modal-title">Delete this book?</h2>
+      <p id="delete-modal-desc">
+        You are about to permanently remove <strong data-delete-title></strong>
+        (ISBN <span data-delete-isbn></span>) from the catalogue. This cannot be undone.
+      </p>
+      <form method="get" action="#" id="delete-modal-form">
+        <input type="hidden" name="csrf_token" value="">
+        <label class="checkbox">
+          <input type="checkbox" name="confirm" value="yes" id="delete-confirm-check">
+          <span>I understand this book record will be permanently deleted.</span>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn-danger" id="delete-confirm-btn" disabled>
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg> Delete book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+<script src="static/js/script.js" defer></script>
+</body>
+</html>
