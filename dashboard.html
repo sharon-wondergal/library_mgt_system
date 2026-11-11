@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · Campus Library</title>
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="layout-app"><div style="position:fixed;bottom:12px;right:12px;z-index:200;background:#0f1f3d;color:#fff;font:600 12px/1.4 Segoe UI,Arial,sans-serif;padding:8px 12px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.25)">Design preview &middot; not connected to the database &middot; <a href="index.html" style="color:#f1d98a">all pages</a></div>
+
+
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-brand">
+      <img src="static/images/logo.svg" alt="" width="40" height="40">
+      <div>
+        <span class="brand-name">Campus Library</span>
+        <span class="brand-sub">Book Management System</span>
+      </div>
+      <button class="icon-btn sidebar-close" type="button" data-sidebar-close aria-label="Close menu"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-heading">Menu</span>
+      <a href="dashboard.html" class="nav-link active">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+      <a href="books.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg><span>All Books</span></a>
+      <a href="add_book.html" class="nav-link ">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span>Add New Book</span></a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <span class="avatar" aria-hidden="true">H</span>
+        <div class="user-meta">
+          <strong>Head Librarian</strong>
+          <span class="role-pill role-admin">Admin</span>
+        </div>
+      </div>
+      <form method="get" action="#">
+        <input type="hidden" name="csrf_token" value="">
+        <button type="submit" class="nav-link nav-logout"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span>Sign out</span></button>
+      </form>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" data-sidebar-close></div>
+
+
+<div class="main">
+  
+  <header class="topbar">
+    <button class="icon-btn menu-toggle" type="button" data-sidebar-open aria-label="Open menu"
+            aria-controls="sidebar" aria-expanded="false"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="topbar-title">
+      
+      <h1>Dashboard</h1>
+    </div>
+    <form class="topbar-search" action="books.html" method="get" role="search">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" name="q" placeholder="Search books…" aria-label="Search books"
+             value="">
+    </form>
+  </header>
+  
+
+  <main class="content" id="content">
+    
+      
+      <div class="alerts" aria-live="polite">
+        
+          
+          <div class="alert alert-success" role="status" data-alert>
+            <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+            <span>Welcome back, Head Librarian!</span>
+            <button type="button" class="alert-close" data-alert-close aria-label="Dismiss"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          </div>
+        
+      </div>
+      
+    
+
+    
+<p class="page-intro">Hello, Head Librarian. Here is an overview of the library catalogue.</p>
+
+<section class="stat-grid" aria-label="Catalogue statistics">
+  <a class="stat-card" href="books.html">
+    <span class="stat-icon tone-navy"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></span>
+    <span class="stat-label">Total books (titles)</span>
+    <span class="stat-value">26</span>
+  </a>
+  <a class="stat-card" href="books.html">
+    <span class="stat-icon tone-blue"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 2 10 5-10 5L2 7Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></span>
+    <span class="stat-label">Total copies</span>
+    <span class="stat-value">119</span>
+  </a>
+  <a class="stat-card" href="#categories">
+    <span class="stat-icon tone-teal"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span>
+    <span class="stat-label">Categories</span>
+    <span class="stat-value">8</span>
+  </a>
+  <a class="stat-card" href="books.html">
+    <span class="stat-icon tone-amber"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg></span>
+    <span class="stat-label">Out of stock</span>
+    <span class="stat-value">2</span>
+    <span class="stat-note">4 more with 2 or fewer copies</span>
+  </a>
+</section>
+
+<section class="quick-actions" aria-label="Quick navigation">
+  <a href="add_book.html" class="btn btn-primary"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg> Add new book</a>
+  <a href="books.html" class="btn btn-secondary"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg> View all books</a>
+  <a href="books.html" class="btn btn-secondary"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Recently added</a>
+</section>
+
+<div class="dash-grid">
+  <section class="card" id="categories">
+    <header class="card-header"><h2>Books by category</h2></header>
+    
+      <ul class="bar-list">
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">Computer Science</span>
+            <span class="bar-count">8 titles · 42 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 100.0%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">African Literature</span>
+            <span class="bar-count">4 titles · 19 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 50.0%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">Fiction</span>
+            <span class="bar-count">4 titles · 18 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 50.0%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">Science</span>
+            <span class="bar-count">3 titles · 10 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 37.5%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">Economics</span>
+            <span class="bar-count">2 titles · 10 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 25.0%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">History</span>
+            <span class="bar-count">2 titles · 10 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 25.0%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">Mathematics</span>
+            <span class="bar-count">2 titles · 10 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 25.0%"></span></span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="books.html">
+            <span class="bar-label">Philosophy</span>
+            <span class="bar-count">1 title · 0 copies</span>
+            <span class="bar-track"><span class="bar-fill" style="width: 12.5%"></span></span>
+          </a>
+        </li>
+        
+      </ul>
+    
+  </section>
+
+  <section class="card">
+    <header class="card-header"><h2>Recently added</h2>
+      <a class="card-link" href="books.html">View all</a></header>
+    
+      <ul class="mini-list">
+        
+        <li>
+          <a href="book_details.html">
+            <strong>The Republic</strong>
+            <span>Plato · Philosophy</span>
+          </a>
+          <span class="badge">0</span>
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>Long Walk to Freedom</strong>
+            <span>Nelson Mandela · History</span>
+          </a>
+          <span class="badge">3</span>
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>Sapiens: A Brief History of Humankind</strong>
+            <span>Yuval Noah Harari · History</span>
+          </a>
+          <span class="badge">7</span>
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>Pride and Prejudice</strong>
+            <span>Jane Austen · Fiction</span>
+          </a>
+          <span class="badge">2</span>
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>The Great Gatsby</strong>
+            <span>F. Scott Fitzgerald · Fiction</span>
+          </a>
+          <span class="badge">5</span>
+        </li>
+        
+      </ul>
+    
+  </section>
+
+  <section class="card">
+    <header class="card-header"><h2>Needs attention</h2>
+      <a class="card-link" href="books.html">View stock</a></header>
+    
+      <ul class="mini-list">
+        
+        <li>
+          <a href="book_details.html">
+            <strong>Advanced Engineering Mathematics</strong>
+            <span>Shelf MA-B1-02</span>
+          </a>
+          <span class="badge badge-danger">Out of stock</span>
+          
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>The Republic</strong>
+            <span>Shelf PH-G1-01</span>
+          </a>
+          <span class="badge badge-danger">Out of stock</span>
+          
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>Song of Lawino and Song of Ocol</strong>
+            <span>Shelf LT-E1-04</span>
+          </a>
+          <span class="badge badge-warning">1 left</span>
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>Computer Networking: A Top-Down Approach</strong>
+            <span>Shelf CS-A2-02</span>
+          </a>
+          <span class="badge badge-warning">2 left</span>
+        </li>
+        
+        <li>
+          <a href="book_details.html">
+            <strong>On the Origin of Species</strong>
+            <span>Shelf SC-C1-03</span>
+          </a>
+          <span class="badge badge-warning">2 left</span>
+        </li>
+        
+      </ul>
+    
+  </section>
+</div>
+
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 Campus Library · Library Book Management System
+  </footer>
+</div>
+
+
+  
+  <div class="modal" id="delete-modal" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title"
+         aria-describedby="delete-modal-desc">
+      <div class="modal-icon"><svg class="icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg></div>
+      <h2 id="delete-modal-title">Delete this book?</h2>
+      <p id="delete-modal-desc">
+        You are about to permanently remove <strong data-delete-title></strong>
+        (ISBN <span data-delete-isbn></span>) from the catalogue. This cannot be undone.
+      </p>
+      <form method="get" action="#" id="delete-modal-form">
+        <input type="hidden" name="csrf_token" value="">
+        <label class="checkbox">
+          <input type="checkbox" name="confirm" value="yes" id="delete-confirm-check">
+          <span>I understand this book record will be permanently deleted.</span>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn-danger" id="delete-confirm-btn" disabled>
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg> Delete book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+<script src="static/js/script.js" defer></script>
+</body>
+</html>
